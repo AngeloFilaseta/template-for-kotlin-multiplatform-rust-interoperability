@@ -65,19 +65,23 @@ kotlin {
         binaries {
             sharedLib()
             staticLib()
+            executable {
+                entryPoint = "main"
+            }
+        }
+        compilations.getByName("main") {
+            cinterops {
+                val plus by creating {
+                    includeDirs("$projectDir/target")
+                    extraOpts("-libraryPath", "$projectDir/target/release")
+                }
+            }
         }
     }
 
     linuxX64(nativeSetup)
-    linuxArm64(nativeSetup)
-
     mingwX64(nativeSetup)
-
     macosX64(nativeSetup)
-    macosArm64(nativeSetup)
-    ios(nativeSetup)
-    watchos(nativeSetup)
-    tvos(nativeSetup)
 
     targets.all {
         compilations.all {
@@ -175,4 +179,17 @@ publishing {
             }
         }
     }
+}
+
+val generateHeaders by tasks.registering {
+    project.exec {
+        commandLine("cbindgen", "--output", "target/plus.h")
+    }
+}
+
+val cargoBuildRelease by tasks.registering {
+    project.exec {
+        commandLine("cargo", "build", "--release")
+    }
+    finalizedBy(generateHeaders)
 }

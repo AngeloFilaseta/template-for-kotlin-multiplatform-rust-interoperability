@@ -1,0 +1,2 @@
+headers = plus.h
+staticLibraries = libplus.a
