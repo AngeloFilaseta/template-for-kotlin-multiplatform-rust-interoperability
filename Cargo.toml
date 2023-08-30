@@ -1,0 +1,7 @@
+[package]
+name = "plus"
+version = "0.1.0"
+authors = ["Angelo Filaseta <filaseta.angelo@gmail.com>"]
+
+[lib]
+crate_type = ["staticlib"]
