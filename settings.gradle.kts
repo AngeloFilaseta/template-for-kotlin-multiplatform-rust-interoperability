@@ -27,4 +27,4 @@ gitHooks {
     createHooks()
 }
 
-rootProject.name = "kotlin-native-rust-interoperability".toLowerCase()
+rootProject.name = "kotlin-native-rust-interoperability"
