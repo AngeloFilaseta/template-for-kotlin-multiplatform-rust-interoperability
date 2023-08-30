@@ -5,3 +5,4 @@ authors = ["Angelo Filaseta <filaseta.angelo@gmail.com>"]
 
 [lib]
 crate_type = ["staticlib"]
+path = "src/rustMain/lib.rs"
