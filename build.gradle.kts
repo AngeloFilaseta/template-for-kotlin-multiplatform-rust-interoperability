@@ -67,13 +67,12 @@ kotlin {
         binaries {
             sharedLib()
             all {
-                linkerOpts(
-                    "-l${rootProject.projectDir}/target/release/libplus.${when {
-                        os.isLinux || os.isMacOsX -> "a"
-                        os.isWindows -> "lib"
-                        else -> ""
-                    }}"
-                )
+                File("${rootProject.projectDir}/target/release/").listFiles{file ->
+                    file.name.endsWith(".a") || file.name.endsWith(".lib")
+                }?.let {
+                    linkerOpts(it.map { f -> "-l${f.absolutePath}" }
+                    )
+                }
             }
             executable {
                 entryPoint = "main"
