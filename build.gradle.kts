@@ -59,12 +59,22 @@ kotlin {
         binaries.library()
     }
 
+    val os = OperatingSystem.current()
+
     val nativeSetup: KotlinNativeTarget.() -> Unit = {
         compilations["main"].defaultSourceSet.dependsOn(kotlin.sourceSets["nativeMain"])
         compilations["test"].defaultSourceSet.dependsOn(kotlin.sourceSets["nativeTest"])
         binaries {
             sharedLib()
-            staticLib()
+            all {
+                linkerOpts("-l${rootProject.projectDir}/target/release/libplus.${
+                    when {
+                        os.isLinux || os.isMacOsX -> "a"
+                        os.isWindows -> "lib"
+                        else -> ""
+                    }
+                }")
+            }
             executable {
                 entryPoint = "main"
             }
@@ -91,7 +101,6 @@ kotlin {
         }
     }
 
-    val os = OperatingSystem.current()
     val excludeTargets = when {
         os.isLinux -> kotlin.targets.filterNot { "linux" in it.name }
         os.isWindows -> kotlin.targets.filterNot { "mingw" in it.name }
