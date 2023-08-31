@@ -27,4 +27,4 @@ gitHooks {
     createHooks()
 }
 
-rootProject.name = "kotlin-native-rust-interoperability"
+rootProject.name = "template-for-kotlin-multiplatform-rust-interoperability"
