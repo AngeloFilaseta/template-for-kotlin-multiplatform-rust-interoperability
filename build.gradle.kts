@@ -186,21 +186,12 @@ publishing {
 // *****************************
 
 /**
- * The clean task also delete the "target" folder, equivalent of "build" folder in kotlin for Rust.
- */
-tasks.named("clean") {
-    doFirst{
-        delete("target")
-    }
-}
-
-/**
  * Utility to launch cargo commands. Might be moved to buildSrc.
  */
 fun Task.cargoCLI(vararg commands: String) {
     doLast {
         project.exec {
-            commandLine("cargo", commands)
+            commandLine("cargo", *commands)
         }
     }
 }
@@ -230,6 +221,7 @@ val cargoBuildRelease by tasks.registering {
  */
 val cargoTest by tasks.registering {
     cargoCLI("test")
+    dependsOn(cargoBuildRelease)
 }
 
 /**
@@ -237,4 +229,20 @@ val cargoTest by tasks.registering {
  */
 tasks.filter { it.name.contains("cinterop") }.forEach {
     it.dependsOn(cargoBuildRelease)
+}
+
+/**
+ * Also run Rust tests when launching the "check" task.
+ */
+tasks.check {
+    dependsOn(cargoTest)
+}
+
+/**
+ * The clean task also delete the "target" folder, equivalent of "build" folder in kotlin for Rust.
+ */
+tasks.clean {
+    doFirst {
+        delete("target")
+    }
 }
