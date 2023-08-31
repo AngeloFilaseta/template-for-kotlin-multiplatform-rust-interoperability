@@ -67,13 +67,13 @@ kotlin {
         binaries {
             sharedLib()
             all {
-                linkerOpts("-l${rootProject.projectDir}/target/release/libplus.${
-                    when {
+                linkerOpts(
+                    "-l${rootProject.projectDir}/target/release/libplus.${when {
                         os.isLinux || os.isMacOsX -> "a"
                         os.isWindows -> "lib"
                         else -> ""
-                    }
-                }")
+                    }}"
+                )
             }
             executable {
                 entryPoint = "main"
