@@ -139,7 +139,7 @@ signing {
 publishOnCentral {
     projectLongName.set("Template for Kotlin Multiplatform Project")
     projectDescription.set("A template repository for Kotlin Multiplatform projects")
-    repository("https://maven.pkg.github.com/danysk/${rootProject.name}".toLowerCase()) {
+    repository("https://maven.pkg.github.com/danysk/${rootProject.name}".lowercase()) {
         user.set("DanySK")
         password.set(System.getenv("GITHUB_TOKEN"))
     }
@@ -192,4 +192,8 @@ val cargoBuildRelease by tasks.registering {
         commandLine("cargo", "build", "--release")
     }
     finalizedBy(generateHeaders)
+}
+
+tasks.filter { it.name.contains("cinterop") }.forEach {
+    it.dependsOn(cargoBuildRelease)
 }
