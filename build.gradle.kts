@@ -181,19 +181,60 @@ publishing {
     }
 }
 
-val generateHeaders by tasks.registering {
-    project.exec {
-        commandLine("cbindgen", "--output", "target/plus.h")
+// *****************************
+//      Rust Configurations
+// *****************************
+
+/**
+ * The clean task also delete the "target" folder, equivalent of "build" folder in kotlin for Rust.
+ */
+tasks.named("clean") {
+    doFirst{
+        delete("target")
     }
 }
 
-val cargoBuildRelease by tasks.registering {
-    project.exec {
-        commandLine("cargo", "build", "--release")
+/**
+ * Utility to launch cargo commands. Might be moved to buildSrc.
+ */
+fun Task.cargoCLI(vararg commands: String) {
+    doLast {
+        project.exec {
+            commandLine("cargo", commands)
+        }
     }
+}
+
+/**
+ * Generate the .h files to bind the Rust .a library to Kotlin.
+ * See the .def file in the nativeInterop folder to see the cinterop configuration.
+ */
+val generateHeaders by tasks.registering {
+    doLast {
+        project.exec {
+            commandLine("cbindgen", "--output", "target/plus.h")
+        }
+    }
+}
+
+/**
+ * Build the Rust library with release optimization enabled in the compiler.
+ */
+val cargoBuildRelease by tasks.registering {
+    cargoCLI("build", "--release")
     finalizedBy(generateHeaders)
 }
 
+/**
+ * Execute the Rust tests.
+ */
+val cargoTest by tasks.registering {
+    cargoCLI("test")
+}
+
+/**
+ * Tasks relative to cinterop needs to Rust library to correctly execute.
+ */
 tasks.filter { it.name.contains("cinterop") }.forEach {
     it.dependsOn(cargoBuildRelease)
 }
