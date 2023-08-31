@@ -36,19 +36,18 @@ Here's how it is possible to use Rust in Kotlin thanks to this configuration:
 -   A corresponding `plus` function is automatically created by Kotlin and can be used in the native sourceSet. 
 
 ## Building and running the example
-
-The following command can be used to build the Rust library.
-The header file will also be generated inside the `target` folder.
-```shell
-gradle cargoBuildRelease
-```
-It is then possible to launch the example with the command of you specific platform:
+It is possible to launch the example with the command of you specific platform:
 ```shell
 gradle runDebugExecutableLinuxX64 # Linux
 gradle runDebugExecutableMacosX64 # MacOS
 gradle runDebugExecutableMingwX64 # Windows
 ```
-
+The build is configured to automatically generate the Rust library artifacts when building the Kotlin Native project.
+However, it is possible to manually generate them using the following command:
+```shell
+gradle cargoBuildRelease
+```
+The header file will also be generated inside the `target` folder.
 # Some Credits
 
 A heartfelt acknowledgment goes to [FilippoVissani](https://github.com/FilippoVissani) for his passive but useful contribution.
