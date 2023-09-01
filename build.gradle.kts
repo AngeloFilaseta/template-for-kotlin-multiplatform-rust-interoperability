@@ -68,15 +68,15 @@ kotlin {
         binaries {
             sharedLib()
             all {
-                val libExtensions = listOf(".a", ".lib")
-                val libPaths = "${rootProject.projectDir}/target/release"
-                println(File(libPaths).listFilesOrdered())
-                val libs = File(libPaths).listFilesOrdered { f ->
-                    libExtensions.any{ f.name.endsWith(it) }
-                }.map { "-l:${it.name}" }
-                linkerOpts.add("-L$libPaths")
-                linkerOpts.addAll(libs)
-                println(linkerOpts)
+                val libPath = "${rootProject.projectDir}/target/release"
+                val libName = "plus"
+                val libNameInOS = when {
+                    os.isLinux || os.isMacOsX -> "lib${libName}.a"
+                    os.isWindows -> "${libName}.lib"
+                    else -> ""
+                }
+                linkerOpts.add("-L$libPath")
+                linkerOpts.add("-l:$libNameInOS")
             }
             executable {
                 entryPoint = "main"
@@ -86,7 +86,6 @@ kotlin {
             cinterops {
                 val plus by creating {
                     includeDirs("$projectDir/target")
-                    extraOpts("-libraryPath", "$projectDir/target/release")
                 }
             }
         }
