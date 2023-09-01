@@ -71,8 +71,8 @@ kotlin {
                 val libPath = "${rootProject.projectDir}/target/release"
                 val libName = "plus"
                 val libNameInOS = when {
-                    os.isLinux || os.isMacOsX -> "lib${libName}.a"
-                    os.isWindows -> "${libName}.lib"
+                    os.isLinux || os.isMacOsX -> "lib$libName.a"
+                    os.isWindows -> "$libName.lib"
                     else -> ""
                 }
                 linkerOpts.add("-L$libPath")
