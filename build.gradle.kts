@@ -70,6 +70,7 @@ kotlin {
             all {
                 val libExtensions = listOf(".a", ".lib")
                 val libPaths = "${rootProject.projectDir}/target/release"
+                println(File(libPaths).listFilesOrdered())
                 val libs = File(libPaths).listFilesOrdered { f ->
                     libExtensions.any{ f.name.endsWith(it) }
                 }.map { "-l:${it.name}" }
