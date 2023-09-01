@@ -1,6 +1,8 @@
 import org.danilopianini.gradle.mavencentral.JavadocJar
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 import org.gradle.internal.os.OperatingSystem
+import org.gradle.kotlin.dsl.support.listFilesOrdered
+import org.jetbrains.kotlin.util.removeSuffixIfPresent
 
 @Suppress("DSL_SCOPE_VIOLATION")
 plugins {
@@ -67,12 +69,18 @@ kotlin {
         binaries {
             sharedLib()
             all {
-                File("${rootProject.projectDir}/target/release/").listFiles{file ->
-                    file.name.endsWith(".a") || file.name.endsWith(".lib")
-                }?.let {
-                    linkerOpts(it.map { f -> "-l${f.absolutePath}" }
-                    )
+                val libExtensions = listOf(".a", ".lib")
+                val libraryPath = "${rootProject.projectDir}/target/release"
+                val libraries = File(libraryPath).listFilesOrdered { f ->
+                    libExtensions.any{ e ->
+                        f.name.endsWith(e)
+                    }
+                }.map {
+                    "-l:${it.name}"
                 }
+                linkerOpts.add("-L${libraryPath}")
+                linkerOpts.addAll(libraries)
+                println(linkerOpts)
             }
             executable {
                 entryPoint = "main"
