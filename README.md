@@ -23,7 +23,7 @@ Here's how it is possible to use Rust in Kotlin thanks to this configuration:
     Pay attention to the line `crate_type = ["staticlib"]`. 
     This means that the Rust project does not contain a main entrypoint, but a collection of possible APIs.
 -   Our Rust project is a library: the file `lib.rs` can expose some operations and structure. 
-    In this case, just a simple `plus` method was implemented.
+    In this case, just a simple `plus` method is implemented.
     The `#[no_mangle]` and `pub extern "C"` lines are important, but we won't explain their meaning in this README.
 -   Kotlin is unable to directly use the Rust library,
     but we can create a header file (`.h`) using [cbindgen](https://github.com/mozilla/cbindgen) and our Rust code.
@@ -33,6 +33,9 @@ Here's how it is possible to use Rust in Kotlin thanks to this configuration:
     using cinterop, a `.def` file is used to specify some configuration for the C compiler and linker.
     Some configuration are also added in `build.gradle.kts`.
     Check [C Interoperability](https://kotlinlang.org/docs/native-c-interop.html) for more info.
+-   Some additional configuration are added to the `build.gradle.kts`.
+    Using `linkerOpts` the effective library (`.a` in Linux and macOS, `.lib ` in Windows) is linked during the build process.
+    This could also be configured in the `.def` file, but I'm not doing it because of [KT-48082 issue](https://youtrack.jetbrains.com/issue/KT-48082).
 -   A corresponding `plus` function is automatically created by Kotlin and can be used in the native sourceSet. 
 
 ## Building and running the example
