@@ -225,6 +225,9 @@ val generateHeaders by tasks.registering {
 val cargoBuildRelease by tasks.registering {
     cargoCLI("build", "--release")
     finalizedBy(generateHeaders)
+    doLast {
+        println(File("${rootProject.projectDir}/target/release").listFilesOrdered().map { it.name })
+    }
 }
 
 /**
