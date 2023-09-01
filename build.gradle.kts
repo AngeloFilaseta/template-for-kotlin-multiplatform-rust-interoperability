@@ -66,6 +66,7 @@ kotlin {
         compilations["main"].defaultSourceSet.dependsOn(kotlin.sourceSets["nativeMain"])
         compilations["test"].defaultSourceSet.dependsOn(kotlin.sourceSets["nativeTest"])
         binaries {
+            staticLib()
             sharedLib()
             all {
                 val libPath = "${rootProject.projectDir}/target/release"
