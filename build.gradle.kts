@@ -76,7 +76,7 @@ kotlin {
                     os.isWindows -> "$libName.lib"
                     else -> ""
                 }
-                linkerOpts.add("$libPath/$libNameInOS")s
+                linkerOpts.add("$libPath/$libNameInOS")
             }
             executable {
                 entryPoint = "main"
