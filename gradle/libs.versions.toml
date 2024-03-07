@@ -1,7 +1,7 @@
 [versions]
 android-plugins = "7.0.0"
 kotest = "5.8.0"
-kotlin = "1.9.22"
+kotlin = "1.9.23"
 
 [libraries]
 kotest-assertions-core = { module = "io.kotest:kotest-assertions-core", version.ref = "kotest" }
