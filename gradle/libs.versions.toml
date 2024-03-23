@@ -30,5 +30,5 @@ gitSemVer = "org.danilopianini.git-sensitive-semantic-versioning-gradle-plugin:3
 kotlin-qa = "org.danilopianini.gradle-kotlin-qa:0.60.0"
 multiJvmTesting = "org.danilopianini.multi-jvm-test-plugin:0.5.8"
 npm-publish = "dev.petuska.npm.publish:3.4.2"
-publishOnCentral = "org.danilopianini.publish-on-central:5.0.23"
+publishOnCentral = "org.danilopianini.publish-on-central:5.0.26"
 taskTree = "com.dorongold.task-tree:2.1.1"
